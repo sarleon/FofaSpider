@@ -13,14 +13,17 @@ from lxml import etree
 from fake_useragent import UserAgent
 from concurrent.futures import ThreadPoolExecutor
 
+ua = """
+"""
 
 def cmd():
     parser = optparse.OptionParser()
     parser.add_option('-p', '--page', dest='page', type='int', default=5, help='write the page you want crawel')
     parser.add_option('-q', '--query', dest='query', help='write the query you want')
-    parser.add_option('-c', '--cookie', dest='cookie', help='write your cookie')
+    # parser.add_option('-c', '--cookie', dest='cookie', help='write your cookie')
     (options, args) = parser.parse_args()
-    if options.query is None or options.cookie is None:
+    # if options.query is None or options.cookie is None:
+    if options.query is None:
         parser.print_help()
         sys.exit(0)
     else:
@@ -65,6 +68,7 @@ if __name__ == '__main__':
     q = quote(options.query)
     qbase64 = quote(str(base64.b64encode(options.query.encode()),encoding='utf-8'))
     target = 'https://fofa.so/result?page={}&q={}&qbase64={}'.format(page, q, qbase64)
-    cookie = options.cookie
+    # cookie = options.cookie
+    cookie = "".join(args)
     test = FofaSpider(page,cookie,q,qbase64)
     test.run()
