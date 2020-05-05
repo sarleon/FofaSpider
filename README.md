@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 **windows下使用不需要加引号，windows下的查询语句最好用 \ 转义一下（后面会想办法改）**
 
-**同时windows的高级语法 || && 暂时不能使用后续会修改**
+**同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用**
 
 `python3 Spider.py 你的fofaCookie  -q domain=\"baidu.com\" `
 
