@@ -13,27 +13,37 @@ from lxml import etree
 from fake_useragent import UserAgent
 from concurrent.futures import ThreadPoolExecutor
 
-ua = """
-"""
+def banner():
+    print("""\033[36m
+         _____      __       ____        _     _           
+        |  ___|__  / _| __ _/ ___| _ __ (_) __| | ___ _ __ 
+        | |_ / _ \| |_ / _` \___ \| '_ \| |/ _` |/ _ \ '__|
+        |  _| (_) |  _| (_| |___) | |_) | | (_| |  __/ |   
+        |_|  \___/|_|  \__,_|____/| .__/|_|\__,_|\___|_|
+                                  |_|                   \033[0m                             
+         # coded by KpLi0rn   website www.wjlshare.xyz
+    """)
 
 def cmd():
     parser = optparse.OptionParser()
     parser.add_option('-p', '--page', dest='page', type='int', default=5, help='write the page you want crawel')
     parser.add_option('-q', '--query', dest='query', help='write the query you want')
+    parser.add_option('-r',dest='source',help='you txt path')
     # parser.add_option('-c', '--cookie', dest='cookie', help='write your cookie')
     (options, args) = parser.parse_args()
     # if options.query is None or options.cookie is None:
-    if options.query is None:
-        parser.print_help()
-        sys.exit(0)
-    else:
-        return options,args
+    # if options.query is None:
+    #     parser.print_help()
+    #     sys.exit(0)
+    # else:
+    return options,args
 
 class FofaSpider(object):
 
-    def __init__(self,page,Cookie,q,qbase64):
-        self.q = q
-        self.qbase64 = qbase64
+    # query 就是我们的查询语句
+    def __init__(self,page,Cookie,query):
+        self.q = quote(query)
+        self.qbase64 = quote(str(base64.b64encode(query.encode()),encoding='utf-8'))
         self.page = page
         self.s = requests.Session()
         self.ua = UserAgent()
@@ -43,14 +53,11 @@ class FofaSpider(object):
 
     def spider(self,page):
         try:
-            # time.sleep(random.randint(3, 7))
             target = 'https://fofa.so/result?page={}&q={}&qbase64={}'.format(page,self.q, self.qbase64)
             res = self.s.get(url=target, headers=self.header).text
-            # time.sleep(random.randint(3,7))
             selector = etree.HTML(res)
             domain = selector.xpath('//*[@id="ajax_content"]/div/div/div/a/text()')
             for value in domain:
-                # print(value)
                 value.strip(' ')
                 self.domains.add(value)
                 print(value)
@@ -62,13 +69,21 @@ class FofaSpider(object):
         pool = ThreadPoolExecutor(2)
         [pool.submit(self.spider,i) for i in range(1,self.page)]
 
+
 if __name__ == '__main__':
+    banner()
     options,args = cmd()
-    page = options.page + 1
-    q = quote(options.query)
-    qbase64 = quote(str(base64.b64encode(options.query.encode()),encoding='utf-8'))
-    target = 'https://fofa.so/result?page={}&q={}&qbase64={}'.format(page, q, qbase64)
-    # cookie = options.cookie
     cookie = "".join(args)
-    test = FofaSpider(page,cookie,q,qbase64)
-    test.run()
+    # page = options.page + 1
+    if options.source is not None:
+        with open(options.source,'r+') as file:
+            # cookie = "".join(args)
+            for value in file.readlines():
+                value = value.strip('\n')
+                spider = FofaSpider(options.page + 1, cookie, value)
+                spider.run()
+    else:
+    # cookie = "".join(args)
+        spider = FofaSpider(options.page+1,cookie,options.query)
+        spider.run()
+
