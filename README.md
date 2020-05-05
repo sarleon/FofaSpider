@@ -1,8 +1,11 @@
 目前处于代码初期后期会继续更新，欢迎师傅们加QQ提意见：NTYzMTY0NjE3 (防麦片)
 # FofaSpider
-本脚本基于python3开发
+本脚本基于python3开发，利用了线程池
 
 fofa爬虫，支持高级查询语句批量获取域名和ip
+
+为了防止爬取过程中被ban延长了time.sleep()的时间，平均sleep 8秒左右
+
 ### 依赖安装
 
 pip install -r requirements.txt
