@@ -2,7 +2,7 @@
 # FofaSpider
 本脚本基于python3开发
 
-fofa爬虫，支持高级查询语句批量获取域名和ip,自动爬取
+fofa爬虫，支持高级查询语句批量获取域名和ip,自动爬取直到结果为空
 
 为了防止爬取过程中被ban延长了time.sleep()的时间，平均sleep 5秒左右
 
