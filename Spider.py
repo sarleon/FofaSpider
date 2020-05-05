@@ -61,7 +61,7 @@ class FofaSpider(object):
                 value.strip(' ')
                 self.domains.add(value)
                 print(value)
-            time.sleep(random.randint(3,7))
+            time.sleep(random.randint(7,10))
         except Exception as e:
             print(e)
 
