@@ -17,15 +17,15 @@ pip install -r requirements.txt
 
 **ps：普通用户高级语法查询只支持第一页，非高级语法搜索支持前5页**
 
-## **Linux下使用**
+## Linux下使用
 
 `python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
 
-## **Windows下使用**
+## Windows下使用
 
-**windows下使用不需要加引号，windows下的查询语句最好用 \ 转义一下（后面会想办法改）**
+windows下使用不需要加引号，windows下的查询语句最好用 \ 转义一下（后面会想办法改）
 
-**同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用**
+同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用
 
 `python3 Spider.py 你的fofaCookie  -q domain=\"baidu.com\" `
 
