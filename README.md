@@ -17,11 +17,11 @@ pip install -r requirements.txt
 
 **ps：普通用户高级语法查询只支持第一页，非高级语法搜索支持前5页**
 
-#### **Linux下使用**
+# **Linux下使用**
 
 `python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
 
-#### **Windows下使用**
+# **Windows下使用**
 
 **windows下使用不需要加引号，windows下的查询语句最好用 \ 转义一下（后面会想办法改）**
 
@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 `python3 Spider.py 你的fofaCookie  -q domain=\"baidu.com\" `
 
-#### 支持批量查询语句
+# 支持批量查询语句
 将查询语句写在txt文档中，一个语句换一行，格式如下:
 domain="baidu.com"
 
