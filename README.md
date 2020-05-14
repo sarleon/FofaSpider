@@ -10,6 +10,8 @@ fofa爬虫，支持高级查询语句批量获取域名和ip,自动爬取直到�
 ## 更新日志：
 05.13 新增输出结果到文本功能,取消了fakeUseragent的使用
 
+05.14 新增部分代码高亮,以及结果判断
+
 ## 目前功能
 支持批量爬取功能，将语句写在txt中会进行批量查询(为了防止被ban，爬取周期有可能较长)
 
@@ -29,11 +31,11 @@ pip install -r requirements.txt
 
 ## Windows下使用
 
-windows下使用不需要加引号，windows下的查询语句最好用 \ 转义一下（后面会想办法改）
+windows下使用不需要加引号
 
 同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用
 
-`python3 Spider.py 你的fofaCookie  -q domain=\"baidu.com\" `
+`python3 Spider.py 你的fofaCookie  -q domain="baidu.com" `
 
 ## 支持批量查询语句
 将查询语句写在txt文档中，一个语句换一行，格式如下:

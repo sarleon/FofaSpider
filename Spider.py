@@ -58,6 +58,7 @@ class FofaSpider(object):
                 selector = etree.HTML(res)
                 domain = selector.xpath('//*[@id="ajax_content"]/div/div/div/a/text()')
                 if len(domain) == 0:
+                    # print('\n')
                     print("爬取结束,或您的账号已无法再爬取")
                     break
                 print("\033[31m第%s页\033[0m" % str(self.page))
@@ -76,30 +77,41 @@ class FofaSpider(object):
         self.spider()
 
 if __name__ == '__main__':
-    m = hashlib.md5()
-    m.update(b'%s' % (str(time.time())).encode('utf-8'))
-    name = m.hexdigest()[:6]
-    banner()
-    options,args = cmd()
-    cookie = "".join(args)
-    # page = options.page + 1
-    if options.source is not None:
-        with open(options.source,'r+') as file:
-            # cookie = "".join(args)
-            for value in file.readlines():
-                value = value.strip('\n')
-                spider = FofaSpider(cookie, value)
-                spider.run()
-                # 判断脚本有没有运行结束 如果运行结束的话 就将self.domains 中的数据输出到txt文本当中
-                # print(spider.domains)
+    try:
+        # res = set()
+        m = hashlib.md5()
+        m.update(b'%s' % (str(time.time())).encode('utf-8'))
+        name = m.hexdigest()[:6]
+        banner()
+        options,args = cmd()
+        cookie = "".join(args)
+        # page = options.page + 1
+        if options.source is not None:
+            with open(options.source,'r+') as file:
+                # cookie = "".join(args)
+                for value in file.readlines():
+                    value = value.strip('\n')
+                    spider = FofaSpider(cookie, value)
+                    spider.run()
+                    # res = spider.domains
+                    # 判断脚本有没有运行结束 如果运行结束的话 就将self.domains 中的数据输出到txt文本当中
+                    # print(spider.domains)
+        else:
+            spider = FofaSpider(cookie,options.query)
+            spider.run()
+            # res = spider.domains
+            # print(spider.domains)
+        if len(spider.domains) == 0:
+            print("\033[31m[!]返回数据为空，请查看查询语句是否正确\033[0m")
+        else:
+            for value in spider.domains:
+                with open('./{}.txt'.format(name), 'a+') as file:
+                    file.writelines(value)
+                    file.write('\n')
+            # print('\n')
+            print('\033[31m[+]结果输出在{}.txt中\033[0m'.format(name))
 
-    else:
-        spider = FofaSpider(cookie,options.query)
-        spider.run()
-        # print(spider.domains)
+    except Exception as e:
+        print(e)
 
-    for value in spider.domains:
-        with open('./{}.txt'.format(name),'a+') as file:
-            file.writelines(value)
-            file.write('\n')
-    print('结果输出在{}文本中'.format(name))
+
