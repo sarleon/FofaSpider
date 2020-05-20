@@ -37,6 +37,8 @@ pip install -r requirements.txt
 
 ## Windows下使用
 
+windows用户强烈推荐在cmder中使用，在cmd中使用没有高亮
+
 windows下使用不需要加引号
 
 同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用
