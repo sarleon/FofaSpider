@@ -35,7 +35,8 @@ windows用户强烈推荐在cmder中使用，在cmd中使用没有高亮
 `python3 Spider.py 你的fofaCookie  -q domain="baidu.com" `
 
 ps:windows使用过程中如果出现没结果的情况有可能是输入引号但是由于一些终端问题导致引号没有带入查询语句
-采取将语句写入txt文本 采用 -r 模式
+
+解决方案：将查询语句写入txt文本 利用 -r 模式来读取数据(此bug后续会尝试解决)
 
 ## 支持批量查询语句
 将查询语句写在txt文档中，一个语句换一行，格式如下:
