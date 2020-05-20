@@ -45,6 +45,7 @@ windows下使用不需要加引号
 
 ## 支持批量查询语句
 将查询语句写在txt文档中，一个语句换一行，格式如下:
+
 domain="baidu.com"
 
 domain="bilibili.com"
