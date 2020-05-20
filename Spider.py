@@ -39,15 +39,14 @@ class FofaSpider(object):
     def __init__(self,Cookie,query):
         self.q = quote(query)
         self.qbase64 = quote(str(base64.b64encode(query.encode()),encoding='utf-8'))
-        self.s = requests.Session()
-        self.UserAgent = ["Mozilla/5.0 (compatible; Baiduspider-render/2.0; +http://www.baidu.com/search/spider.html)", "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 (compatible; Baiduspider-render/2.0; +http://www.baidu.com/search/spider.html)","Baiduspider-image+(+http://www.baidu.com/search/spider.htm)","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)","360spider (http://webscan.360.cn)","Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)","Googlebot-Image/1.0","Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)","Sosospider+(+http://help.soso.com/webspider.htm)","Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)","Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50","Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0","Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11","Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)"]
+        self.UserAgent = ["Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 9.50","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36","Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11","Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16","Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 TaoBrowser/2.0 Safari/536.11","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Maxthon/4.4.3.4000 Chrome/30.0.1599.101 Safari/537.36","Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; SV1; QQDownload 732; .NET4.0C; .NET4.0E; SE 2.X MetaSr 1.0)","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 732; .NET4.0C; .NET4.0E; LBBROWSER)","Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0","Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11","Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)"]
         # 这里的cookie 后面改成input 用户自己输入
         self.Cookie = Cookie
         self.domains = set()
         self.page = 1
 
     def spider(self):
-
+        flag = 0
         dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         dt1 = "".join((dt.split(" ")[0]).split('-'))
         dt2 = "".join((dt.split(" ")[1]).split(':'))
@@ -57,11 +56,12 @@ class FofaSpider(object):
         try:
             while(self.page):
                 target = 'https://fofa.so/result?page={}&q={}&qbase64={}'.format(self.page,self.q, self.qbase64)
-                res = self.s.get(url=target, headers=header).text
+                res = requests.get(url=target, headers=header).text
                 selector = etree.HTML(res)
                 domain = selector.xpath('//*[@id="ajax_content"]/div/div/div/a/text()')
+
                 if len(domain) == 0:
-                    print("\033[31m[!]爬取结束,或您的账号已无法再爬取\033[0m")
+                    print("\033[31m[!]爬取结束或您的账号已无法再爬取\033[0m")
                     break
 
                 print("\033[31m第%s页\033[0m" % str(self.page))
@@ -70,16 +70,18 @@ class FofaSpider(object):
                     self.domains.add(value)
                     print(value)
                     with open('{}.txt'.format(name),'a+') as file:
+                        flag = 1
                         file.writelines(value)
                         file.write('\n')
                 self.page+=1
                 time.sleep(random.randint(5,8))
-
-            print('\033[31m[+]结果输出在{}.txt中\033[0m'.format(name))
+                if flag == 1:
+                    print('\033[31m[+]结果输出在{}.txt中\033[0m'.format(name))
 
         except Exception as e:
-            print('\033[31m[+]结果输出在{}.txt中\033[0m'.format(name))
-            print("'\033[31m[!]异常退出！\033[0m'")
+            with open('error.txt','w+') as file:
+                file.writelines(e)
+            print("'\033[31m[!]异常退出！报错信息保存在error.txt中\033[0m'")
 
     def run(self):
         self.spider()
