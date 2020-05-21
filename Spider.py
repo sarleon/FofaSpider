@@ -23,7 +23,6 @@ def banner():
     """)
 
 
-
 def cmd():
     parser = optparse.OptionParser()
     parser.add_option('-q', '--query', dest='query', help='write the query you want')
@@ -75,8 +74,8 @@ class FofaSpider(object):
                         file.write('\n')
                 self.page+=1
                 time.sleep(random.randint(5,8))
-                if flag == 1:
-                    print('\033[31m[+]结果输出在{}.txt中\033[0m'.format(name))
+            if flag == 1:
+                print('\033[31m[+]结果输出在{}.txt中\033[0m'.format(name))
 
         except Exception as e:
             with open('error.txt','w+') as file:
