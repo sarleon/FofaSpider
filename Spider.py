@@ -48,7 +48,6 @@ class FofaSpider(object):
         self.page = 1
 
     def spider(self):
-        flag = 0
         global i
         i=0
         dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -63,10 +62,15 @@ class FofaSpider(object):
         sheet = filename.add_sheet('result')
 
         header = {"User-Agent": random.choice(self.UserAgent), "Cookie": self.Cookie}
+        url = 'https://fofa.so/result?q={}&qbase64={}&full=true'.format(self.q, self.qbase64)
+        html = requests.get(url=url, headers=header).text
+        pages = re.findall('>(\d*)</a> <a class="next_page" rel="next"', html)
+        page = pages[0]
+        print("\033[31m总共有{}页\033[0m".format(page))
         try:
-            # while循环控制爬取页数
-            while(self.page):
-                target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(self.page,self.q, self.qbase64)
+            pagenum = int(page) + 1
+            for n in range(1,pagenum):
+                target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(n,self.q, self.qbase64)
                 res = requests.get(url=target, headers=header).text
                 selector = etree.HTML(res)
                 codes = "".join(selector.xpath('//*[@id="ajax_content"]/div/div/div/div/div/div/text()')) # 爬取状态码
@@ -74,28 +78,15 @@ class FofaSpider(object):
                 nums = compile.findall(codes) # 状态码列表
                 # 域名和ip聚合成字典
                 res = zip(domain,nums)
-                # 如果没有域名或ip了就退出
-                if len(domain) == 0:
-                    print("\033[31m[!]爬取结束或您的账号已无法再爬取\033[0m")
-                    break
-                print("\033[31m第%s页\033[0m" % str(self.page))
-
+                print("\033[31m第%s页\033[0m" % str(n))
                 for value in res:
-                    flag = 1
-                    # self.final.append(value) # 列表 一个字典为一个元素
-                    # 输出域名信息和状态码
-
                     print(str(i) +": " +value[0] + ": " + value[1])
                     sheet.write(i, 0, value[0])
                     sheet.write(i, 1, value[1])
                     i += 1
-                # print(self.final)
-                self.page+=1
                 time.sleep(random.randint(5,8))
                 filename.save('./{}.csv'.format(name))
-
-            if flag == 1:
-                sys.stdout.write('\033[31m搜集结果为{}.csv\033[0m'.format(name))
+            sys.stdout.write('\033[31m搜集结果为{}.csv\033[0m'.format(name))
 
         except Exception as e:
             print("'\033[31m[!]异常退出！\033[0m'")
