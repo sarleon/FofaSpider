@@ -95,11 +95,11 @@ class FofaSpider(object):
                 filename.save('./{}.csv'.format(name))
 
             if flag == 1:
-                sys.stdout.write('搜集结果为result/{}.csv\n'.format(name))
+                sys.stdout.write('搜集结果为{}.csv\n'.format(name))
 
         except Exception as e:
+            print("'\033[31m[!]异常退出！\033[0m'")
             print(e)
-            print("'\033[31m[!]异常退出！报错信息保存在error.txt中\033[0m'")
 
     def run(self):
         self.spider()
@@ -112,7 +112,6 @@ if __name__ == '__main__':
     try:
         if options.source is not None:
             with open(options.source,'r+') as file:
-                # cookie = "".join(args)
                 for value in file.readlines():
                     value = value.strip('\n')
                     spider = FofaSpider(cookie, value)
