@@ -66,6 +66,7 @@ class FofaSpider(object):
         pages = re.findall('>(\d*)</a> <a class="next_page" rel="next"', html)
         page = pages[0]
         print("\033[31m总共有{}页\033[0m".format(page))
+        print("\033[31m查询语句为{}\033[0m".format(self.q))
         try:
             pagenum = int(page) + 1
             for n in range(1,pagenum):
