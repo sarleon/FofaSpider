@@ -66,7 +66,7 @@ class FofaSpider(object):
         try:
             # while循环控制爬取页数
             while(self.page):
-                target = 'https://fofa.so/result?page={}&q={}&qbase64={}'.format(self.page,self.q, self.qbase64)
+                target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(self.page,self.q, self.qbase64)
                 res = requests.get(url=target, headers=header).text
                 selector = etree.HTML(res)
                 codes = "".join(selector.xpath('//*[@id="ajax_content"]/div/div/div/div/div/div/text()')) # 爬取状态码
@@ -95,7 +95,7 @@ class FofaSpider(object):
                 filename.save('./{}.csv'.format(name))
 
             if flag == 1:
-                sys.stdout.write('搜集结果为{}.csv\n'.format(name))
+                sys.stdout.write('\033[31m搜集结果为{}.csv\033[0m'.format(name))
 
         except Exception as e:
             print("'\033[31m[!]异常退出！\033[0m'")
