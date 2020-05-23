@@ -53,18 +53,20 @@ class FofaSpider(object):
         dt1 = "".join((dt.split(" ")[0]).split('-'))
         dt2 = "".join((dt.split(" ")[1]).split(':'))
         name = dt1 + "_" + dt2
-
         # 提取状态码
         compile = re.compile('HTTP/1.1 (\d+) ')
-
         filename = xlwt.Workbook()
         sheet = filename.add_sheet('result')
-
         header = {"User-Agent": random.choice(self.UserAgent), "Cookie": self.Cookie}
         url = 'https://fofa.so/result?q={}&qbase64={}&full=true'.format(self.q, self.qbase64)
         html = requests.get(url=url, headers=header).text
+        # print(html)
         pages = re.findall('>(\d*)</a> <a class="next_page" rel="next"', html)
-        page = pages[0]
+        if len(pages) == 0:
+            page = 1
+        else:
+            page = pages[0]
+
         print("\033[31m总共有{}页\033[0m".format(page))
         print("\033[31m查询语句为{}\033[0m".format(self.q))
         try:
