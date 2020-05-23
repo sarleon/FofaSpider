@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     try:
         if options.source is not None:
-            with open(options.source,'r+') as file:
+            with open(options.source,'r+',encoding='utf-8') as file:
                 for value in file.readlines():
                     value = value.strip('\n')
                     spider = FofaSpider(cookie, value)
