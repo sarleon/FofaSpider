@@ -88,7 +88,7 @@ class FofaSpider(object):
                     i += 1
                 time.sleep(random.randint(5,8))
                 filename.save('./{}.csv'.format(name))
-            sys.stdout.write('\033[31m搜集结果为{}.csv\033[0m'.format(name))
+            sys.stdout.write('\033[31m搜集结果为{}.csv\n\n\033[0m'.format(name))
 
         except Exception as e:
             print("'\033[31m[!]异常退出！\033[0m'")
