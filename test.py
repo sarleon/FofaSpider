@@ -89,7 +89,6 @@ class FofaSpider(object):
                         sheet.write(i, 0, value)
                         i += 1
                     time.sleep(random.randint(5, 8))
-
                 else:
                     # 域名和ip聚合成字典
                     res = zip(domain,nums)
