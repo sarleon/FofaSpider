@@ -13,6 +13,10 @@
 
 为了防止爬取过程中被ban延长了time.sleep()的时间，平均sleep 6秒左右
 
+# 声明
+
+请不要利用本工具从事一切和违法有关的事情，如使用本工具则默认同意
+
 ## 依赖安装
 
 pip install -r requirements.txt
