@@ -21,7 +21,6 @@ pip install -r requirements.txt
 
 ## 项目更新
 
-项目增加新的库 xlwt 更新的时候重新安装一下依赖
 
 `git pull`
 
