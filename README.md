@@ -4,7 +4,7 @@
 
 本脚本基于python3开发
 
-文件中的 FofaSpider.py 是抢先版 Spider.py是稳定版 两者使用用法一样
+**文件中的 FofaSpider.py 是抢先版 Spider.py是稳定版 两者使用用法一样**
 
 (抢先版中取消了状态码的爬取但是确保不会漏爬，文件输出在txt中)
 
