@@ -2,18 +2,17 @@
 
 # FofaSpider
 
-本脚本基于python3开发
+本脚本基于python3开发，支持批量爬取功能，将语句写在txt中会进行批量查询
 
-**文件中的 FofaSpider.py 是抢先版 Spider.py是稳定版 两者使用用法一样**
+**文件中的 FofaSpider.py 是txt版 Spider.py是excel版 两者使用用法一样**
 
-(抢先版中取消了状态码的爬取但是确保不会漏爬，文件输出在txt中)
+txt版漏爬的情况会少一些但是不会爬取状态码
 
-支持批量爬取功能，将语句写在txt中会进行批量查询(为了防止被ban，爬取周期有可能较长)
+excel版会自动爬取信息同时输出到excel中 (由于爬取的是fofa中的状态码，所以有可能会出现状态码实际情况不吻合的情况)
 
-支持输出爬取结果到excel中，结果和状态码一一对应
+可自定义从第几页进行爬取
 
 为了防止爬取过程中被ban延长了time.sleep()的时间，平均sleep 6秒左右
-
 
 ## 声明
 
@@ -25,14 +24,19 @@ pip install -r requirements.txt
 
 ## 项目更新
 
-
 `git pull`
 
 **ps：普通用户高级语法查询只支持第一页，非高级语法搜索支持前5页，会员账号一天只能爬取1w条数据**
 
+# 使用说明
+
 ## Linux下使用
 
 `python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
+
+-p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1
+
+`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"' -p 5`
 
 ## Windows下使用
 
@@ -43,6 +47,10 @@ windows用户强烈推荐在cmder中使用，在cmd中使用没有高亮
 同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用
 
 `python3 Spider.py 你的fofaCookie  -q domain="baidu.com" `
+
+-p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1
+
+`python3 Spider.py 你的fofaCookie  -q domain="baidu.com" -p 5`
 
 ps:windows使用过程中如果出现没结果的情况有可能是输入引号但是由于一些终端问题导致引号没有带入查询语句
 
@@ -79,4 +87,5 @@ domain="bilibili.com"
 
 05.26 增加了改进版，改进版中不会漏爬，但是取消了状态码的爬取
 
+05.30 增加了 -p 参数 自定义从第几页开始爬 不加则默认为1
 
