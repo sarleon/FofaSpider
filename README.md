@@ -10,7 +10,7 @@ txt版不会爬取状态码
 
 excel版会自动爬取信息同时输出到excel中 (由于爬取的是fofa中的状态码，所以有可能会出现状态码实际情况不吻合的情况)
 
-可自定义从第几页进行爬取
+可自定义从第几页进行爬取,爬取几页
 
 为了防止爬取过程中被ban延长了time.sleep()的时间，平均sleep 6秒左右
 
@@ -32,13 +32,15 @@ pip install -r requirements.txt
 
 # 使用说明
 
+ps：有的时候不能正常爬取的原因是因为cookie信息没有复制全
+
 ## Linux下使用
 
 `python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
 
--p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1
+-p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1 -s 爬取几页(该参数可不加)
 
-`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"' -p 5`
+`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"' -p 5 -s 10`
 
 ## Windows下使用
 
@@ -50,9 +52,9 @@ windows用户强烈推荐在cmder中使用，在cmd中使用没有高亮
 
 `python3 Spider.py 你的fofaCookie  -q domain="baidu.com" `
 
--p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1
+-p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1 -s 爬取几页(该参数可不加)
 
-`python3 Spider.py 你的fofaCookie  -q domain="baidu.com" -p 5`
+`python3 Spider.py 你的fofaCookie  -q domain="baidu.com" -p 5 -s 10`
 
 ps:windows使用过程中如果出现没结果的情况有可能是输入引号但是由于一些终端问题导致引号没有带入查询语句
 
@@ -90,4 +92,6 @@ domain="bilibili.com"
 05.26 增加了改进版，改进版中不会漏爬，但是取消了状态码的爬取
 
 05.30 增加了 -p 参数 自定义从第几页开始爬 不加则默认为1
+
+07.04 增加功能爬取几页
 
