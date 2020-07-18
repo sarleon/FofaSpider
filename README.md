@@ -95,3 +95,5 @@ domain="bilibili.com"
 
 07.04 增加功能爬取几页
 
+07.14 适配fofa新版本
+
