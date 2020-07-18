@@ -1,14 +1,10 @@
 目前处于代码初期后期会继续更新，欢迎师傅们加QQ提意见：NTYzMTY0NjE3 (防麦片)
 
-# Fofa页面改版 近期会进行更新
-
 # FofaSpider
 
 本脚本基于python3开发，支持批量爬取功能，将语句写在txt中会进行批量查询
 
 **文件中的 FofaSpider.py 是txt版 Spider.py是excel版 两者使用用法一样**
-
-txt版不会爬取状态码
 
 excel版会自动爬取信息同时输出到excel中 (由于爬取的是fofa中的状态码，所以有可能会出现状态码实际情况不吻合的情况)
 
