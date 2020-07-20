@@ -105,7 +105,7 @@ class FofaSpider(object):
                     print("\033[31m第%s页\033[0m" % str(n))
                     for value in res:
                         print(str(i) +": " +value[0] + ": " + value[1])
-                        sheet.write(i, 0, value)
+                        sheet.write(i, 0, value[0])
                         sheet.write(i, 1, value[1])
                         i += 1
                     time.sleep(random.randint(5,8))
