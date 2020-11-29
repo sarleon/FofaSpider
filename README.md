@@ -28,10 +28,7 @@ pip install -r requirements.txt
 **ps：普通用户高级语法查询只支持第一页，非高级语法搜索支持前5页，会员账号一天只能爬取1w条数据**
 
 # 使用说明
-
-ps：有的时候不能正常爬取的原因是因为cookie信息没有复制全
-
-## Linux下使用
+## Linux
 
 `python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
 
@@ -39,23 +36,11 @@ ps：有的时候不能正常爬取的原因是因为cookie信息没有复制全
 
 `python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"' -p 5 -s 10`
 
-## Windows下使用
+## Windows
 
-windows用户强烈推荐在cmder中使用，在cmd中使用没有高亮
+windows下强烈推荐在powershell中运行
+`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
 
-**windows下使用不需要加引号**
-
-同时windows的高级语法中的|| && 只能在 -r 读取txt文本的模式下使用
-
-`python3 Spider.py 你的fofaCookie  -q domain="baidu.com" `
-
--p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1 -s 爬取几页(该参数可不加)
-
-`python3 Spider.py 你的fofaCookie  -q domain="baidu.com" -p 5 -s 10`
-
-ps:windows使用过程中如果出现没结果的情况有可能是输入引号但是由于一些终端问题导致引号没有带入查询语句
-
-解决方案：将查询语句写入txt文本 利用 -r 模式来读取数据(此bug后续会尝试解决)
 
 ## 支持批量查询语句
 将查询语句写在txt文档中，一个语句换一行，格式如下:
@@ -93,4 +78,6 @@ domain="bilibili.com"
 07.04 增加功能爬取几页
 
 07.14 适配fofa新版本
+
+11.29 小问题修改，添加txt输出
 

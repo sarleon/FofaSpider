@@ -11,9 +11,10 @@ import optparse
 import requests
 
 from datetime import datetime
-from urllib.parse import quote
+from urllib.parse import quote,unquote
 from lxml import etree
 
+# 生成一个txt的输出结果
 def banner():
     print("""\033[36m
          _____      __       ____        _     _           
@@ -26,9 +27,10 @@ def banner():
     """)
 
 
+
 def cmd():
     parser = optparse.OptionParser()
-    parser.add_option('-q', '--query', dest='query', help='write the query you want')
+    parser.add_option('-q', '--query', dest='query', type=str, help='write the query you want')
     parser.add_option('-r',dest='source',help='you txt path')   # 批量搜索文件
     parser.add_option('-p',dest='startpage',default=1,type=int,help='input the StartPage')
     parser.add_option('-s',dest='spidernum',default=0,type=int,help='intput the Spider number')
@@ -71,47 +73,54 @@ class FofaSpider(object):
             page = pages[0]
 
         print("\033[31m总共有{}页\033[0m".format(page))
-        print("\033[31m查询语句为{}\033[0m".format(self.q))
+        print("\033[31m查询语句为{}\033[0m".format(unquote(self.q,'utf-8')))
         try:
             pagenum = int(page) + 1
             for n in range(self.startpage,pagenum):
                 if self.spidernum != 0 and (n == (self.startpage + self.spidernum +1)):
                     break
-
                 target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(n, self.q, self.qbase64)
                 res = requests.get(url=target, headers=header).text
+                if "游客使用高级语法只能显示第一页" in res:
+                    sys.stdout.write('\033[31m游客使用高级语法只能显示第一页\n\033[0m'.format(name))
+                    sys.exit(0)
                 selector = etree.HTML(res)
                 codes = "".join(selector.xpath('//*[@id="ajax_content"]/div/div[2]/div[2]/div/div[1]/text()'))  # 爬取状态码
                 domain = selector.xpath('//*[@id="ajax_content"]/div/div[1]/div[1]/a/text()')  # 爬取域名或ip
                 domain = [value.strip('\n').strip(' ') for value in domain if len(value.strip('\n').strip(' ')) != 0]
                 nums = compile.findall(codes)  # 状态码列表
-                # res = zip(domain, nums)
-                if len(domain) == 0:
-                    sys.exit(0)
+
                 # rdp等协议类查询
                 if len(domain)==0:
-                    domain = selector.xpath('//*[@id="ajax_content"]/div/div/div[1]/div[1]/text()')
-                    domain = [value.strip(' ').strip('\n').strip(' ') for value in domain]
+                    scheme = selector.xpath('//*[@id="ajax_content"]/div/div[1]/div[1]/text()')
+                    scheme = [value.strip(' ').strip('\n').strip(' ') for value in scheme]
                     print("\033[31m第%s页\033[0m" % str(n))
-                    for value in domain:
-                        print(value)
-                        sheet.write(i, 0, value)
-                        i += 1
+                    with open("{}.txt".format(name),"a+") as file:
+                        for value in scheme:
+                            print(value)
+                            file.writelines(value)
+                            file.writelines("\n")
+                            sheet.write(i, 0, value)
+                            i += 1
                     time.sleep(random.randint(5, 8))
 
                 else:
                     # 域名和ip聚合成字典
                     res = zip(domain,nums)
                     print("\033[31m第%s页\033[0m" % str(n))
-                    for value in res:
-                        print(str(i) +": " +value[0] + ": " + value[1])
-                        sheet.write(i, 0, value[0])
-                        sheet.write(i, 1, value[1])
-                        i += 1
+                    with open("{}.txt".format(name),"a+") as file:
+                        for value in res:
+                            file.writelines(value[0])
+                            file.writelines("\n")
+                            print(value[0] + ": " + value[1])
+                            sheet.write(i, 0, value[0])
+                            sheet.write(i, 1, value[1])
+                            i += 1
                     time.sleep(random.randint(5,8))
 
                 filename.save('./{}.csv'.format(name))
-            sys.stdout.write('\033[31m搜集结果为{}.csv\n\n\033[0m'.format(name))
+            sys.stdout.write('\033[31m搜集结果为{}.csv\n\033[0m'.format(name))
+            sys.stdout.write('\033[31m\t{}.txt\n\n\033[0m'.format(name))
 
         except Exception as e:
             print("'\033[31m[!]异常退出！\033[0m'")
@@ -130,13 +139,16 @@ if __name__ == '__main__':
             with open(options.source,'r+',encoding='utf-8') as file:
                 for value in file.readlines():
                     value = value.strip('\n')
-                    spider = FofaSpider(cookie, value, options.startpage, options.spidernum)
-                    spider.run()
+                    try:
+                        spider = FofaSpider(cookie, value, options.startpage, options.spidernum)
+                        spider.run()
+                    except:
+                        pass
         else:
             spider = FofaSpider(cookie,options.query, options.startpage, options.spidernum)
             spider.run()
 
-    except Exception as e:
-        print("'\033[31m[!]异常退出！\033[0m'")
-        print(e)
+    except KeyboardInterrupt:
+        print("\n\033[31m[!]用户异常退出\033[0m")
+        # print(e)
 
