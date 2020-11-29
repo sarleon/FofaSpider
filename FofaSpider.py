@@ -149,6 +149,6 @@ if __name__ == '__main__':
             spider.run()
 
     except KeyboardInterrupt:
-        print("\n\033[31m[!]用户退出g\033[0m")
+        print("\n\033[31m[!]用户退出\033[0m")
         # print(e)
 
