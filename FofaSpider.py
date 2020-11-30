@@ -49,15 +49,16 @@ class FofaSpider(object):
         self.page = 1
         self.startpage = startpage
         self.spidernum = spidernum
-
+        self.dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.name = ("".join((self.dt.split(" ")[0]).split('-'))) + "_" + "".join((self.dt.split(" ")[1]).split(':'))
 
     def spider(self):
         global i
         i=0
-        dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        dt1 = "".join((dt.split(" ")[0]).split('-'))
-        dt2 = "".join((dt.split(" ")[1]).split(':'))
-        name = dt1 + "_" + dt2
+        # dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # dt1 = "".join((dt.split(" ")[0]).split('-'))
+        # dt2 = "".join((dt.split(" ")[1]).split(':'))
+        # name = dt1 + "_" + dt2
         # 提取状态码
         compile = re.compile('HTTP/1.1 (\d+) ')
         filename = xlwt.Workbook()
@@ -82,7 +83,9 @@ class FofaSpider(object):
                 target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(n, self.q, self.qbase64)
                 res = requests.get(url=target, headers=header).text
                 if "游客使用高级语法只能显示第一页" in res:
-                    sys.stdout.write('\033[31m游客使用高级语法只能显示第一页\n\033[0m'.format(name))
+                    sys.stdout.write('\033[31m游客使用高级语法只能显示第一页\n\033[0m')
+                    sys.stdout.write(
+                        '\033[31m搜集结果为{}.csv、\033[0m\033[31m\t{}.txt\n\n\033[0m'.format(spider.name, spider.name))
                     sys.exit(0)
                 selector = etree.HTML(res)
                 codes = "".join(selector.xpath('//*[@id="ajax_content"]/div/div[2]/div[2]/div/div[1]/text()'))  # 爬取状态码
@@ -95,7 +98,7 @@ class FofaSpider(object):
                     scheme = selector.xpath('//*[@id="ajax_content"]/div/div[1]/div[1]/text()')
                     scheme = [value.strip(' ').strip('\n').strip(' ') for value in scheme]
                     print("\033[31m第%s页\033[0m" % str(n))
-                    with open("{}.txt".format(name),"a+") as file:
+                    with open("{}.txt".format(self.name),"a+") as file:
                         for value in scheme:
                             print(value)
                             file.writelines(value)
@@ -108,7 +111,7 @@ class FofaSpider(object):
                     # 域名和ip聚合成字典
                     res = zip(domain,nums)
                     print("\033[31m第%s页\033[0m" % str(n))
-                    with open("{}.txt".format(name),"a+") as file:
+                    with open("{}.txt".format(self.name),"a+") as file:
                         for value in res:
                             file.writelines(value[0])
                             file.writelines("\n")
@@ -118,9 +121,9 @@ class FofaSpider(object):
                             i += 1
                     time.sleep(random.randint(5,8))
 
-                filename.save('./{}.csv'.format(name))
-            sys.stdout.write('\033[31m搜集结果为{}.csv\n\033[0m'.format(name))
-            sys.stdout.write('\033[31m\t{}.txt\n\n\033[0m'.format(name))
+                filename.save('./{}.csv'.format(self.name))
+            sys.stdout.write('\033[31m搜集结果为{}.csv、\033[0m\033[31m\t{}.txt\n\n\033[0m'.format(spider.name, spider.name))
+
 
         except Exception as e:
             print("'\033[31m[!]异常退出！\033[0m'")
@@ -149,6 +152,7 @@ if __name__ == '__main__':
             spider.run()
 
     except KeyboardInterrupt:
-        print("\n\033[31m[!]用户退出\033[0m")
-        # print(e)
+        print("\n\033[31m[!]用户退出\033[0m\n")
+        sys.stdout.write('\033[31m搜集结果为{}.csv、\033[0m\033[31m\t{}.txt\n\n\033[0m'.format(spider.name,spider.name))
+
 
