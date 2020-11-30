@@ -55,11 +55,6 @@ class FofaSpider(object):
     def spider(self):
         global i
         i=0
-        # dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # dt1 = "".join((dt.split(" ")[0]).split('-'))
-        # dt2 = "".join((dt.split(" ")[1]).split(':'))
-        # name = dt1 + "_" + dt2
-        # 提取状态码
         compile = re.compile('HTTP/1.1 (\d+) ')
         filename = xlwt.Workbook()
         sheet = filename.add_sheet('result')
@@ -82,6 +77,13 @@ class FofaSpider(object):
                     break
                 target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(n, self.q, self.qbase64)
                 res = requests.get(url=target, headers=header).text
+                if "0</span> 条匹配结果" in res:
+                    sys.stdout.write("\033[31m0条匹配结果,请检查查询语句是否正确\n\033[0m")
+                    sys.exit(0)
+
+                if "error 500程序出错了" in res:
+                    sys.stdout.write("\033[31m500程序出错了,请检查查询语句是否正确\n\033[0m")
+                    sys.exit(0)
                 if "游客使用高级语法只能显示第一页" in res:
                     sys.stdout.write('\033[31m游客使用高级语法只能显示第一页\n\033[0m')
                     sys.stdout.write(
