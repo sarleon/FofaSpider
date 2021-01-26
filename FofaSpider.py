@@ -38,7 +38,6 @@ def cmd():
     parser.add_option('-p',dest='startpage',default=1,type=int,help='input the StartPage')
     parser.add_option('-s',dest='spidernum',default=0,type=int,help='intput the Spider number')
 
-
     (options, args) = parser.parse_args()
     return options,args
 
@@ -81,7 +80,7 @@ class FofaSpider(object):
             for n in range(self.startpage,pagenum):
                 if self.spidernum != 0 and (n == (self.startpage + self.spidernum +1)):
                     break
-                target = 'https://fofa.so/result?page={}&q={}&qbase64={}&full=true'.format(n, self.q, self.qbase64)
+                target = 'https://fofa.so/result?page={}&q={}&qbase64={}'.format(n, self.q, self.qbase64)
                 res = requests.get(url=target, headers=header).text
                 if "0</span> 条匹配结果" in res:
                     sys.stdout.write("\033[31m0条匹配结果,请检查查询语句是否正确\n\033[0m")
@@ -97,10 +96,15 @@ class FofaSpider(object):
                         '\033[31m搜集结果为{}.csv、\033[0m\033[31m\t{}.txt\n\n\033[0m'.format(spider.name, spider.name))
                     sys.exit(0)
                 selector = etree.HTML(res)
+
                 codes = "".join(selector.xpath('//*[@id="ajax_content"]/div/div[2]/div[2]/div/div[1]/text()'))  # 爬取状态码
                 domain = selector.xpath('//*[@id="ajax_content"]/div/div[1]/div[1]/a/text()')  # 爬取域名或ip
+                # domain_compile = re.compile("<a target=\"_blank\" href=\"(.*?)\"")
+                # domain = domain_compile.findall(html)
                 domain = [value.strip('\n').strip(' ') for value in domain if len(value.strip('\n').strip(' ')) != 0]
+                print(domain)
                 nums = compile.findall(codes)  # 状态码列表
+
 
                 # rdp等协议类查询
                 if len(domain)==0:
@@ -138,6 +142,29 @@ class FofaSpider(object):
             print("'\033[31m[!]异常退出！\033[0m'")
             print(e)
 
+    # 利用正则进行结果的筛选
+    def match_subdomains(self,html):
+        if fuzzy:
+            regexp = r'(?:[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?\.){0,}' \
+                     + domain.replace('.', r'\.')
+            result = re.findall(regexp, html, re.I)
+            if not result:
+                return set()
+            deal = map(lambda s: s.lower(), result)
+            if distinct:
+                return set(deal)
+            else:
+                return list(deal)
+        else:
+            regexp = r'(?:\>|\"|\'|\=|\,)(?:http\:\/\/|https\:\/\/)?' \
+                     r'(?:[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?\.){0,}' \
+                     + domain.replace('.', r'\.')
+            result = re.findall(regexp, html, re.I)
+        if not result:
+            return set()
+        regexp = r'(?:http://|https://)'
+        deal = map(lambda s: re.sub(regexp, '', s[1:].lower()), result)
+
     def run(self):
         self.spider()
 
@@ -165,3 +192,4 @@ if __name__ == '__main__':
         sys.stdout.write('\033[31m搜集结果为{}.csv、\033[0m\033[31m\t{}.txt\n\n\033[0m'.format(spider.name,spider.name))
 
 
+#search_history=url%3D%22edu.tw%22%2Capp%3D%22Apache-Shiro%22+%26%26+region%3D%22%22%2Capp%3D%22Apache-Shiro%22+%2Capp%3D%22Apache-Shiro%22+%26%26+country%3D%22US%22%2Capp%3D%22Apache-Shiro%22%2Capp%3D%22Apache-Shiro%22%26%26region%3D%22TW%22%2Cip%3D%2261.70.155.249%22%2Cprotocol%3D%3D%22weblogic%22%26%26region%3D%22TW%22%2Cprotocol%3D%3D%E2%80%9Dweblogic%E2%80%9D%26%26region%3D%22TW%22%2Cprotocol%3D%3D%E2%80%9Dweblogic%E2%80%9D%26%26+region%3D%22TW%22%2Cheader%3D%22weblogic%22%26%26+region%3D%22TW%22%2Cheader%3D%22deleteMe%22%26%26+region%3D%22TW%22%2Cheader%3D%22rememberme%3DdeleteMe%22%26%26+region%3D%22TW%22%2Cheader%3D%22set-Cookie%3A+rememberme%3DdeleteMe%22%26%26+region%3D%22TW%22%2Cbody%3D%22set-Cookie%3A+rememberMe%3DdeleteMe%22%26%26+region%3D%22TW%22%2Cbody%3D%22rememberMe%22%26%26+region%3D%22TW%22%2Cbody%3D%22deleteme%22%26%26+region%3D%22TW%22%2Cbody%3D%22deleteme%22%26%26TW+%26%26+country%3D%22TW%22%2Cbody%3D%22deleteme%22%26%26TW%2Cbody%3D%22deleteme%22%2Cbody%3D%22shiro%22; Hm_lvt_9490413c5eebdadf757c2be2c816aedf=1611143197,1611392077,1611405691,1611629442; _fofapro_ars_session=97a8606f00d2bdcf1ca6772762fa3fe2; referer_url=%2F; Hm_lpvt_9490413c5eebdadf757c2be2c816aedf=1611629445
