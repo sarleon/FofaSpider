@@ -1,8 +1,8 @@
 目前处于代码初期后期会继续更新，欢迎师傅们加QQ提意见：NTYzMTY0NjE3 (防麦片)
 
-由于 Fofa 改版该脚本暂时是用不了，这两天会更新
 
 # FofaSpider
+由于 Fofa 该用 jwt token 校验登录所以对应的也改为token
 
 本脚本基于python3开发，支持批量爬取功能，将语句写在txt中会进行批量查询
 
@@ -29,18 +29,25 @@ pip install -r requirements.txt
 **ps：普通用户高级语法查询只支持第一页，非高级语法搜索支持前5页，会员账号一天只能爬取1w条数据**
 
 # 使用说明
+
+# Token
+
+登录之后在请求包的 header 中，Authorization 的值就是我们的Token
+Authorization: xxxxxxxxx.xxxxxxx.xxxxxxxxxx
+`python3 Spider.py 'xxxxx.xxxxx.xxxxxx' -q 'domain="baidu.com"||title="百度"' `
+
 ## Linux
 
-`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
+`python3 Spider.py 'Token' -q 'domain="baidu.com"||title="百度"' `
 
 -p 参数可自定义从第几页开始爬取，可不加不加 -p 参数则默认为1 -s 爬取几页(该参数可不加)
 
-`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"' -p 5 -s 10`
+`python3 Spider.py 'Token' -q 'domain="baidu.com"' -p 5 -s 10`
 
 ## Windows
 
 windows下强烈推荐在powershell中运行
-`python3 Spider.py '你的fofaCookie' -q 'domain="baidu.com"||title="百度"' `
+`python3 Spider.py 'Token' -q 'domain="baidu.com"||title="百度"' `
 
 
 ## 支持批量查询语句
@@ -51,10 +58,10 @@ domain="baidu.com"
 domain="bilibili.com"
 
 **Linux下**
-`python3 Spider.py -r 你文本的路径 'cookie'`
+`python3 Spider.py -r 你文本的路径 'Token'`
 
 **Windows下**
-`python3 Spider.py -r 你文本的路径 cookie`
+`python3 Spider.py -r 你文本的路径 Token`
 
 ## 更新日志：
 05.13 新增输出结果到文本功能,取消了fakeUseragent的使用
