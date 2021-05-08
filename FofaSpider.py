@@ -66,7 +66,11 @@ class FofaSpider(object):
         html = requests.get(url=url, headers=header).text
 
         # pages = re.findall('<span clas="el-pagination__total">(\d*)</span>', html)
-        nums =int("".join(re.findall('<span class="el-pagination__total">共 (.*) 条</span>',html)))
+        try:
+            nums =int("".join(re.findall('<span class="el-pagination__total">共 (.*) 条</span>',html)))
+        except ValueError as e:
+            nums = 1
+
         if nums < 10:
             page = 1
         else:
