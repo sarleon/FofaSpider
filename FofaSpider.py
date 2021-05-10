@@ -83,7 +83,7 @@ class FofaSpider(object):
             for n in range(self.startpage,pagenum):
                 if self.spidernum != 0 and (n == (self.startpage + self.spidernum +1)):
                     break
-                target = 'https://fofa.so/result?pn={}&ps=10&q={}&qbase64={}'.format(n, self.q, self.qbase64)
+                target = 'https://fofa.so/result?page={}&page_size=10&qbase64={}'.format(n, self.qbase64)
                 res = requests.get(url=target, headers=header).text
                 if "0</span> 条匹配结果" in res:
                     sys.stdout.write("\033[31m0条匹配结果,请检查查询语句是否正确\n\033[0m")
