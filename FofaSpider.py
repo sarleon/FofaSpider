@@ -170,6 +170,3 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\n\033[31m[!]用户退出\033[0m\n")
         sys.stdout.write('\033[31m搜集结果为{}.csv、\033[0m\033[31m\t{}.txt\n\n\033[0m'.format(spider.name,spider.name))
-
-
-# eyJhbGciOiJIUzUxMiIsImtpZCI6Ik5XWTVZakF4TVRkalltSTJNRFZsWXpRM05EWXdaakF3TURVMlkyWTNZemd3TUdRd1pUTmpZUT09IiwidHlwIjoiSldUIn0.eyJpZCI6Mjg3NjcsIm1pZCI6MTAwMDIyMjU2LCJ1c2VybmFtZSI6IuWkqeS4i-Wkp-acqOWktCIsImV4cCI6MTYxODg2Mjc4OC4zNDc3NTksImlzcyI6InJlZnJlc2gifQ.C5V4J-r6sO5XCHKU5B15C6t5rSVEVfA3Prwb7Y5zalRR190I6oVqzKcThVJLRHjEx7qUKgHv04iE_avnK8EO4A
