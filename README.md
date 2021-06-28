@@ -1,5 +1,7 @@
 # FofaSpider
 
+有一个更加好更加方便的 gui 工具：https://github.com/FishM4n/Fofa-collect
+
 本脚本基于python3开发，支持批量爬取功能，将语句写在txt中会进行批量查询
 
 excel版会自动爬取信息同时输出到excel、txt中 (由于爬取的是fofa中的状态码，所以有可能会出现状态码实际情况不吻合的情况)
