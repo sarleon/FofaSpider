@@ -1,6 +1,5 @@
 # FofaSpider
 
-有一个更加好更加方便的 gui 工具：https://github.com/FishM4n/Fofa-collect
 
 本脚本基于python3开发，支持批量爬取功能，将语句写在txt中会进行批量查询
 
