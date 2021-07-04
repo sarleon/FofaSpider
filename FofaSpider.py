@@ -100,7 +100,10 @@ class FofaSpider(object):
                     sys.exit(0)
                 selector = etree.HTML(res)
 
-                codes = "".join(selector.xpath('//*[@id="__layout"]/div/div/div/div/div/div/div/div/div/div/div/div/div/text()'))  # 爬取状态码
+                # //*[@id="__layout"]/div/div/div/div/div/div/div/div/div/div/div/div/div/span/text()
+                # codes = "".join(selector.xpath('//*[@id="__layout"]/div/div/div/div/div/div/div/div/div/div/div/div/div/text()'))  # 爬取状态码
+                codes = "".join(selector.xpath('//*[@id="__layout"]/div/div/div/div/div/div/div/div/div/div/div/div/div/span/text()'))  # 爬取状态码
+
                 domain = selector.xpath('//*[@id="__layout"]/div/div/div/div/div/div/div/div/div/span/a/text()')  # 爬取域名或ip
                 # domain_compile = re.compile("<a target=\"_blank\" href=\"(.*?)\"")
                 # domain = domain_compile.findall(html)
