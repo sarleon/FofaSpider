@@ -62,7 +62,7 @@ class FofaSpider(object):
             "User-Agent": random.choice(self.UserAgent),
             "cookie": self.cookie
         }
-        url = 'https://fofa.so/result?q={}&qbase64={}&full=true'.format(self.q, self.qbase64)
+        url = 'https://fofa.info/result?q={}&qbase64={}&full=true'.format(self.q, self.qbase64)
         html = requests.get(url=url, headers=header).text
 
         # pages = re.findall('<span clas="el-pagination__total">(\d*)</span>', html)
